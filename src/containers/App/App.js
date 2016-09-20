@@ -72,9 +72,6 @@ class App extends Component {
               {this.props.children}
             </div>
           </div>
-          <div className="ant-layout-footer">
-             视觉中国 © 2016 DAM数字资产管理系统
-          </div>
         </div>
       </div>
     );

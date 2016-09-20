@@ -56,12 +56,12 @@ function createUserError(message) {
 export function queryUsers(params) {
   return dispatch => {
     dispatch(requestUsers());
-    return cFetch(API_CONFIG.queryUser, { method: "GET", params: params }).then((response) => {
-      if (response.jsonResult.returnCode === '1') {
-        dispatch(receiveUsers(response.jsonResult));
+    return cFetch(API_CONFIG.queryUser, { method: "GET", params: params }).then((res) => {
+      if (res.jsonResult.returnCode === '1') {
+        dispatch(receiveUsers(res.jsonResult));
       } else {
-        dispatch(usersError(response.jsonResult.msg));
-        message.error(response.jsonResult.msg);
+        dispatch(usersError(res.jsonResult.msg));
+        message.error(res.jsonResult.msg);
       }
     });
   };
@@ -70,12 +70,12 @@ export function queryUsers(params) {
 export function createUser(creds) {
   return dispatch => {
     dispatch(requestCreateUser());
-    return cFetch(API_CONFIG.createUser,{ method: "POST", body: JSON.stringify(creds) }).then((response) => {
-      if (response.jsonResult.returnCode === '1') {
-        dispatch(receiveCreateUser(response.jsonResult));
+    return cFetch(API_CONFIG.createUser,{ method: "POST", body: JSON.stringify(creds) }).then((res) => {
+      if (res.jsonResult.returnCode === '1') {
+        dispatch(receiveCreateUser(res.jsonResult));
       } else {
-        dispatch(createUserError(response.jsonResult.msg));
-        message.error(response.jsonResult.msg);
+        dispatch(createUserError(res.jsonResult.msg));
+        message.error(res.jsonResult.msg);
       }
     });
   };
