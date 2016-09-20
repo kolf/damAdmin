@@ -109,20 +109,37 @@ class Users extends Component {
       pageSizeOptions: ['5','10','20','40']
     };
 
+    const formItemLayout = {
+      labelCol: { span: 10 },
+      wrapperCol: { span: 14 }
+    };
+
     return (
       <div>
-        <Form inline className="ant-advanced-search-form">
-          <FormItem label="用户帐号">
-            <Input placeholder="请输入帐号" size="default" />
-          </FormItem>
-          <FormItem label="用户姓名">
-            <Input placeholder="请输入姓名" size="default" />
-          </FormItem>
-          <FormItem label="手机号">
-            <Input placeholder="请输入手机号" size="default" />
-          </FormItem>
-          <Button type="primary" htmlType="submit">搜索</Button>
-          <Button>清除</Button>
+        <Form horizontal className="ant-advanced-search-form">
+          <Row gutter={16}>
+            <Col sm={8}>
+              <FormItem label="用户帐号" {...formItemLayout} >
+                <Input placeholder="请输入产品名称" size="default" />
+              </FormItem>
+            </Col>
+            <Col sm={8}>
+              <FormItem label="用户姓名" {...formItemLayout}>
+                <Input placeholder="请输入搜索名称" size="default" />
+              </FormItem>
+            </Col>
+            <Col sm={8}>
+              <FormItem label="手机号" {...formItemLayout}>
+                <Input placeholder="请输入搜索名称" size="default" />
+              </FormItem>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={12} offset={12} style={{ textAlign: 'right' }}>
+              <Button type="primary" htmlType="submit">搜索</Button>
+              <Button>清除条件</Button>
+            </Col>
+          </Row>
         </Form>
         <Row>
           <Col span={8}>

@@ -6,35 +6,49 @@ import CustomTable from './../../components/CustomTable';
 
 import { queryProducts } from '../../actions/products';
 import { Form, Input, Row, Col, Button, InputNumber } from 'antd';
+
 const FormItem = Form.Item;
 const ButtonGroup = Button.Group;
+const CreateForm = Form.create;
 
 import './Products.scss';
 
-function mapStateToProps(state) {
-  const { products } = state;
-  return {
-    products
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    queryPdoducts: (params) => dispatch(queryProducts(params))
-  };
-}
-
-class ProductList extends Component {
+class Products extends Component {
   constructor(props) {
     super(props);
     this.handleTableChange = this.handleTableChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleReset = this.handleReset.bind(this);
   }
 
   componentDidMount() {
-    this.props.queryPdoducts();
+    const { dispatch } = this.props;
+
+    dispatch(queryProducts());
+  }
+
+  handleReset(e) {
+    e.preventDefault();
+    console.log(this.props);
+    this.props.form.resetFields();
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+
+    const { dispatch } = this.props;
+
+    this.props.form.validateFields((errors) => {
+      if (errors) {
+        return;
+      }
+      const creds = (this.props.form.getFieldsValue());
+      dispatch(queryProducts(creds));
+  });
   }
 
   handleTableChange(pagination, filters = {}, sorter = {}) {
+    const { dispatch } = this.props;
     const pageParams = { pageNum: pagination.current, pageSize: pagination.pageSize };
     const filtersField = {};
     if(Object.keys(filters).length !== 0) {
@@ -51,14 +65,12 @@ class ProductList extends Component {
     }
 
     const params = Object.assign({}, pageParams, filtersField, sortParams);
-    this.props.queryPdoducts(params);
+    dispatch(queryProducts(params));
   }
-
 
   render() {
     const { products: { data, meta, isFetching } } = this.props;
-    const columns = [
-      {
+    const columns = [{
         title: "产品名称",
         dataIndex: "productName",
         key: "productName",
@@ -113,31 +125,44 @@ class ProductList extends Component {
       pageSizeOptions: ['5','10','20','40']
     };
 
+    const formItemLayout = {
+      labelCol: { span: 10 },
+      wrapperCol: { span: 14 }
+    };
+
     return (
       <div>
-        <Form inline className="ant-advanced-search-form">
-          <FormItem label="产品名称">
-            <Input placeholder="请输入产品名称" size="default" />
-          </FormItem>
-          <FormItem label="限定人数(人)">
-            <InputNumber min={1} max={10}/>
-          </FormItem>
-          <FormItem label="使用周期(月)">
-            <InputNumber min={1} max={10} defaultValue={12}/>
-          </FormItem>
-          <FormItem label="存储空间(G)">
-            <InputNumber min={1} max={10}/>
-          </FormItem>
-          <Button type="primary" htmlType="submit">搜索</Button>
-          <Button>清除</Button>
+        <Form horizontal className="ant-advanced-search-form">
+          <Row gutter={16}>
+            <Col sm={8}>
+              <FormItem label="产品名称" {...formItemLayout}>
+                <Input placeholder="请输入产品名称" size="default" />
+              </FormItem>
+              <FormItem label="限定人数(人)" {...formItemLayout}>
+                <Input placeholder="请输入搜索名称" size="default" />
+              </FormItem>
+            </Col>
+            <Col sm={8}>
+              <FormItem label="使用周期(月)" {...formItemLayout}>
+                <Input placeholder="请输入搜索名称" size="default" />
+              </FormItem>
+            </Col>
+            <Col sm={8}>
+              <FormItem label="存储空间(G)" {...formItemLayout}>
+                <Input placeholder="请输入搜索名称" size="default" />
+              </FormItem>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={12} offset={12} style={{ textAlign: 'right' }}>
+              <Button type="primary" htmlType="submit">搜索</Button>
+              <Button type="ghost" onClick={this.handleReset}>清除</Button>
+            </Col>
+          </Row>
         </Form>
-        <Row>
-          <Col span={8}>
-            <div style={{ marginBottom: 16 }}>
-              <Button type="primary"><Link to={'/product/create'}>添加产品</Link></Button>
-            </div>
-          </Col>
-        </Row>
+        <div className="pad-v">
+          <Button type="primary"><Link to={'/product/create'}>添加产品</Link></Button>
+        </div>
         <CustomTable
           columns={columns}
           dataSource={data}
@@ -151,7 +176,16 @@ class ProductList extends Component {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ProductList);
+Products.propTypes = {
+  form: PropTypes.object.isRequired,
+  dispatch: PropTypes.func.isRequired
+};
+
+function mapStateToProps(state) {
+  const { products } = state;
+  return {
+    products
+  };
+}
+
+export default connect(mapStateToProps)(CreateForm()(Products));
