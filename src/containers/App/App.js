@@ -50,6 +50,20 @@ class App extends Component {
                 </Link>
               </Menu.Item>
             </SubMenu>
+
+            <SubMenu key="sub3" title={<span><Icon type="cloud" />资源权限配置</span>}>
+              <Menu.Item key="3">
+                <Link to={'/treeSysRes'}>
+                  系统资源权限
+                </Link>
+              </Menu.Item>
+              <Menu.Item key="4">
+                  <Link to={'/treeUserRes'}>
+                    产品资源管理
+                  </Link>
+              </Menu.Item>
+            </SubMenu>
+
           </Menu>
         </aside>
         <div className="ant-layout-main">
