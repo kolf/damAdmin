@@ -42,3 +42,34 @@ export function querySysRes(params) {
     });
   };
 }
+
+
+
+export function treeSysRes(params) {
+  return dispatch => {
+    dispatch(requestSysRes());
+    return cFetch(API_CONFIG.querySysRes,{ method: "GET", params: params }).then((response) => {
+      if (response.jsonResult.returnCode === '1') {
+        dispatch(receiveSysRes(response.jsonResult));
+      } else {
+        dispatch(sysResError(response.jsonResult.msg));
+        message.error(response.jsonResult.msg);
+      }
+    });
+  };
+}
+
+
+export function treeUserRes(params) {
+  return dispatch => {
+    dispatch(requestSysRes());
+    return cFetch(API_CONFIG.queryUserRes,{ method: "GET", params: params }).then((response) => {
+      if (response.jsonResult.returnCode === '1') {
+        dispatch(receiveSysRes(response.jsonResult));
+      } else {
+        dispatch(sysResError(response.jsonResult.msg));
+        message.error(response.jsonResult.msg);
+      }
+    });
+  };
+}

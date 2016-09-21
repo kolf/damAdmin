@@ -7,6 +7,7 @@ import { Link } from 'react-router';
 
 import CustomTable from './../../components/CustomTable';
 import { querySysRes } from '../../actions/sysRes';
+import { treeUserRes } from '../../actions/sysRes';
 
 import { Form, Input, Row, Col, Button, InputNumber } from 'antd';
 const FormItem = Form.Item;
@@ -14,7 +15,7 @@ const ButtonGroup = Button.Group;
 
 function mapDispatchToProps(dispatch) {
   return {
-    querySysRes: (params) => dispatch(querySysRes(params))
+    treeUserRes: (params) => dispatch(treeUserRes(params))
   };
 }
 
@@ -26,7 +27,7 @@ class TreeUserRes extends Component {
   componentDidMount() {
     //this.props.querySysRes();
     const { dispatch } = this.props;
-    dispatch(querySysRes());
+    dispatch(treeUserRes());
   }
 
   render() {
