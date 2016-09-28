@@ -15,9 +15,6 @@ class SysUsers extends Component {
 
 
   constructor(props) {
-    // console.log("-----construtct--------");
-    // console.log(props);
-    // console.log("-----construtct end--------");
     super(props);
   }
 
@@ -28,9 +25,7 @@ class SysUsers extends Component {
 
 
   render() {
-    console.log("##########################################3")
     console.log(this.props);
-    console.log("##########################################4")
     const {systemUsers: {data, meta, isFetching}} = this.props;
 
     //console.log(this.props.systemUsers);
@@ -124,7 +119,7 @@ class SysUsers extends Component {
           <Row>
           <Col span={8}>
           <div style={{ marginBottom: 16 }}>
-      <Button type="primary"><Link to={'/user/create'}>添加用户</Link></Button>
+      <Button type="primary"><Link to={'/user/createSysUser'}>添加用户</Link></Button>
           </div>
           </Col>
           </Row>
