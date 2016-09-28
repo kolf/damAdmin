@@ -42,6 +42,13 @@ class App extends Component {
                   用户列表
                 </Link>
               </Menu.Item>
+
+              <Menu.Item key="5">
+                <Link to={'/systemUser'}>
+                  系统用户列表
+                </Link>
+              </Menu.Item>
+
             </SubMenu>
             <SubMenu key="sub2" title={<span><Icon type="cloud" />产品管理</span>}>
               <Menu.Item key="2">

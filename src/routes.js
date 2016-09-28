@@ -9,6 +9,8 @@ import Products from './containers/Products/Products';
 import CreateProduct from './containers/CreateProduct/CreateProduct';
 import TreeSysRes from './containers/SysResources/TreeSysRes';
 import TreeUserRes from './containers/SysResources/TreeUserRes';
+import SysUser from './containers/SystemUser/SysUser';
+
 
 import NotFound from './components/NotFound/NotFound';
 
@@ -19,6 +21,12 @@ export default (
     <Redirect from="/user" to="user/list" />
     <Route path="user/list" component={Users} breadcrumbName="用户列表"/>
     <Route path="user/create" component={CreateUser}/>
+
+    <Route path="/systemUser" component={SysUser} />
+
+
+
+
 
     <Redirect from="/product" to="product/list" />
     <Route path="product/list" component={Products} breadcrumbName="产品列表"/>

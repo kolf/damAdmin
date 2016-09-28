@@ -6,6 +6,7 @@ import users from './users';
 import products from './products';
 import res from './res';
 import sysRes from './sysRes';
+import systemUsers from './systemUsers';
 
 const rootReducer = combineReducers({
   routing: routerReducer,
@@ -13,7 +14,8 @@ const rootReducer = combineReducers({
   users,
   products,
   res,
-  sysRes
+  sysRes,
+  systemUsers
 });
 
 export default rootReducer;

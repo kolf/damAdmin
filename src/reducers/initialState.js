@@ -35,5 +35,9 @@ export default {
   sysRes: {
     isFetching: false,
     data: []
+  },
+  systemUsers: {
+    isFetching: false,
+    data: []
   }
 };
