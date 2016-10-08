@@ -8,13 +8,6 @@ import initialState from './initialState';
 
 
 export default function systemUsers(state = initialState.systemUsers, action) {
-  console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-  console.log(initialState.systemUsers);
-  console.log(action);
-  console.log("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
-
-
-
   switch (action.type) {
     case SYSTEM_USER_REQUEST:
       return Object.assign({}, state, {

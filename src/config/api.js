@@ -1,21 +1,26 @@
-//let host = "http://dev.dam-server.vcg.com";
- const host = "http://192.168.3.120:8080";
+import cookie from 'js-cookie';
+let host = "http://dev.dam-server.vcg.com";
+//const host = "http://192.168.3.120:8080";
 
 const baseUri = host + "/";
+
+const token = cookie.get('token');
+
 export const API_CONFIG = {
   host: host,
   baseUri: baseUri,
   auth: 'damSys/syslogin',
-  queryUser: 'damUser/pageList',          //查询用户
-  querySystemUser: 'damUser/listSysUser',  //列表系统用户
-  createUser: 'damUser/create',           //创建用户
-  createSystemUser:'damUser/createSysUser', //创建系统用户
-  listUser: 'damUser/list',           //创建用户
-  productsOpts: 'damProduct/list',        //查询用户产品
-  products: 'damProduct/pageList',        //查询产品
-  createProduct: 'damProduct/create',     //创建产品
-  querySysRes: 'damRes/listSysRes',     //查询系统功能
-  treeSysRes: 'damRes/listSysRes',     //查询系统功能
-  treeUserRes:'damRes/listNoneSysRes',     //查询非系统功能
-  queryRes: 'damRes/listNoneSysRes',           //查询普通功能
+  queryUser: 'damUser/pageList?token=' + token,          //查询用户
+  querySystemUser: 'damUser/listSysUser?token=' + token,  //列表系统用户
+  createUser: 'damUser/create?token=' + token,           //创建用户
+  createSysUser: 'damUser/createSysUser?token=' + token, //创建系统用户
+  createSystemUser:'damUser/createSysUser?token=' + token, //创建系统用户
+  listUser: 'damUser/list?token=' + token,           //创建用户
+  productsOpts: 'damProduct/list?token=' + token,        //查询用户产品
+  products: 'damProduct/pageList?token=' + token + '&',        //查询产品
+  createProduct: 'damProduct/create?token=' + token,     //创建产品
+  querySysRes: 'damRes/listSysRes?token=' + token,     //查询系统功能
+  treeSysRes: 'damRes/listSysRes?token=' + token,     //查询系统功能
+  treeUserRes:'damRes/listNoneSysRes?token=' + token,     //查询非系统功能
+  queryRes: 'damRes/listNoneSysRes?token=' + token,           //查询普通功能
 };

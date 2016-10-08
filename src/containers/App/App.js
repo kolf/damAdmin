@@ -4,6 +4,8 @@ import Login from './../Login/Login';
 import { Link } from 'react-router';
 import './App.scss';
 import { Menu, Breadcrumb, Icon, Dropdown } from 'antd';
+import cookie from 'js-cookie';
+
 const SubMenu = Menu.SubMenu;
 
 import { logoutUser } from './../../actions/auth';
@@ -76,8 +78,13 @@ class App extends Component {
         <div className="ant-layout-main">
           <div className="ant-layout-header">
           <Menu mode="horizontal" onClick={this.handleLogout}>
-              <SubMenu className="pull-right" title={<span><Icon type="user" />Kolf</span>}>
-                <Menu.Item key="setting:3">退出</Menu.Item>
+              <SubMenu className="pull-right" title={<span><Icon type="user" /></span>}>
+                <Menu.Item key="setting:4">
+                      <Link to={'/user/aboutMySelf'}>{cookie.get('damId')}</Link>
+                </Menu.Item>
+                <Menu.Item key="setting:5">
+                  <Link to={'/logout'}>退出</Link>
+                </Menu.Item>
               </SubMenu>
             </Menu>
           </div>

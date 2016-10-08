@@ -7,7 +7,9 @@ import { Link } from 'react-router';
 
 import CustomTable from './../../components/CustomTable';
 import { querySysRes } from '../../actions/sysRes';
-import { treeSysRes } from '../../actions/sysRes';
+import { treeSysRes } from '../../actions/SysResourceTree';
+
+
 
 import { Form, Input, Row, Col, Button, InputNumber } from 'antd';
 const FormItem = Form.Item;
@@ -32,6 +34,8 @@ class TreeSysRes extends Component {
 
   render() {
     // const { products: { data, meta, isFetching } } = this.props;
+    const { sysResTree } = this.props;
+    console.log(sysResTree);
     return (
       <div>
         ddd
@@ -44,7 +48,9 @@ TreeSysRes.propTypes = {
 };
 
 function mapStateToProps() {
+  const { sysResTree } = state;
   return {
+    sysResTree
   };
 }
 

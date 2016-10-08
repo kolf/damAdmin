@@ -80,3 +80,18 @@ export function createUser(creds) {
     });
   };
 }
+
+
+export function createSysUser(creds) {
+  return dispatch => {
+    dispatch(requestCreateUser());
+    return cFetch(API_CONFIG.createSysUser,{ method: "POST", body: JSON.stringify(creds) }).then((res) => {
+      if (res.jsonResult.returnCode === '1') {
+        dispatch(receiveCreateUser(res.jsonResult));
+      } else {
+        dispatch(createUserError(res.jsonResult.msg));
+        message.error(res.jsonResult.msg);
+      }
+    });
+  };
+}

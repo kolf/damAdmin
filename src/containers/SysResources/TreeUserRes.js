@@ -7,7 +7,7 @@ import { Link } from 'react-router';
 
 import CustomTable from './../../components/CustomTable';
 import { querySysRes } from '../../actions/sysRes';
-import { treeUserRes } from '../../actions/sysRes';
+import { treeUserRes } from '../../actions/UserResourceTree';
 
 import { Form, Input, Row, Col, Button, InputNumber } from 'antd';
 const FormItem = Form.Item;
