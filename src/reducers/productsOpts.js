@@ -18,7 +18,7 @@ export default function products(state = initialState.products, action) {
           perPage: action.products.meta.pageSize,
           page: action.products.meta.page
         },
-        data: action.products.data
+        data: action.products.data.list
       });
     case PRODUCTS_OPTS_FAILURE:
       return Object.assign({}, state, {

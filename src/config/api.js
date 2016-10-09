@@ -1,6 +1,6 @@
 import cookie from 'js-cookie';
-let host = "http://dev.dam-server.vcg.com";
-//const host = "http://192.168.3.120:8080";
+//let host = "http://dev.dam-server.vcg.com";
+const host = "http://192.168.3.109:8080";
 
 const baseUri = host + "/";
 
@@ -19,6 +19,8 @@ export const API_CONFIG = {
   productsOpts: 'damProduct/list?token=' + token,        //查询用户产品
   products: 'damProduct/pageList?token=' + token + '&',        //查询产品
   createProduct: 'damProduct/create?token=' + token,     //创建产品
+  viewProduct:'damProduct/view',             //查看产品
+  updateProduct:'damProduct/update?token='+token,        //修改产品
   querySysRes: 'damRes/listSysRes?token=' + token,     //查询系统功能
   treeSysRes: 'damRes/listSysRes?token=' + token,     //查询系统功能
   treeUserRes:'damRes/listNoneSysRes?token=' + token,     //查询非系统功能

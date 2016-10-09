@@ -3,7 +3,7 @@ import {
   CREATE_PRODUCT_QERUEST, CREATE_PRODUCT_SUCCESS, CREATE_PRODUCT_FAILURE,
 } from './../constants/actionTypes';
 import cFetch from './../utils/cFetch';
-
+import cookie from 'js-cookie';
 import { API_CONFIG } from './../config/api';
 import { message } from 'antd';
 
@@ -38,7 +38,7 @@ function requestCreateProduct() {
 
 function receiveCreateProduct(products) {
   return {
-    type: CREATE_PRODUCT_SUCCESS,
+    type: PRODUCT_SUCCESS,
     isFetching: false,
     products
   };
@@ -46,7 +46,7 @@ function receiveCreateProduct(products) {
 
 function CreateProductError(message) {
   return {
-    type: CREATE_PRODUCT_FAILURE,
+    type: PRODUCT_FAILURE,
     isFetching: false,
     message
   };

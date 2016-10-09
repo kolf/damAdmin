@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-
+import { API_CONFIG } from './../../config/api';
 import CustomTable from './../../components/CustomTable';
 
 import { queryProducts } from '../../actions/products';
@@ -68,6 +68,24 @@ class Products extends Component {
     dispatch(queryProducts(params));
   }
 
+
+  handleClick(id,e){
+    e.preventDefault();
+
+    let url=API_CONFIG.baseUri+API_CONFIG.viewProduct+"&id="+id;
+    let fetchOptions = {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+
+    };
+
+    fetch(url, fetchOptions)
+
+  }
+
   render() {
     const { products: { data, meta, isFetching } } = this.props;
     const columns = [{
@@ -109,11 +127,13 @@ class Products extends Component {
       {
         title: '操作',
         key: 'operation',
-        render: () => (
+        render: (item) => (
           <ButtonGroup>
             <Button type="primary">启用</Button>
             <Button type="ghost">停用</Button>
+            <Button type="dashed"><Link to={`/product/view/${item.id}`}>修改</Link></Button>
           </ButtonGroup>
+
         )
       }
     ];

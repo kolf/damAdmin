@@ -24,6 +24,10 @@ export default {
     },
     data: []
   },
+  product:{
+    isFetching: false,
+    data: {}
+  },
   productsOpts: {
     isFetching: false,
     data: []
