@@ -19,6 +19,7 @@ class CreateUser extends Component {
 
   componentDidMount() {
     const { dispatch } = this.props;
+    //const dispatch=this.props.dispatch;
     dispatch(queryProducts());
   }
 
@@ -37,6 +38,7 @@ class CreateUser extends Component {
         return;
       }
       const creds = (this.props.form.getFieldsValue());
+      //creds.products = creds.products.split(',');
       dispatch(createUser(creds));
     });
   }
@@ -56,6 +58,7 @@ class CreateUser extends Component {
   }
 
   render() {
+    const { products: { data, meta, isFetching } } = this.props;
     const { getFieldProps, getFieldError, isFieldValidating } = this.props.form;
     const accountProps = getFieldProps('damId', {
       rules: [
@@ -112,6 +115,10 @@ class CreateUser extends Component {
     });
 
     let productsOpts = [];
+
+    for (let i = 0; i <data.length; i++) {
+      productsOpts.push(<Option key={data[i].id}>{data[i].productName}</Option>);
+    }
 
     const formItemLayout = {
       labelCol: { span: 4 },
@@ -189,6 +196,7 @@ class CreateUser extends Component {
             <Select
               multiple
               placeholder="请选择产品"
+    {...getFieldProps('productids')}
             >
               {productsOpts}
             </Select>
