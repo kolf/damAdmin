@@ -1,12 +1,9 @@
-/**
- * Created by linsheng.yan on 2016/10/8.
- */
-import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
-import { browserHistory } from 'react-router';
-import { Button, Form, Input, Select, InputNumber } from 'antd';
-import { createProduct } from './../../actions/products';
-import { queryRes } from './../../actions/res';
+import React, {Component, PropTypes} from 'react';
+import {connect} from 'react-redux';
+import {browserHistory} from 'react-router';
+import {Button, Form, Input, Select, InputNumber, TreeSelect} from 'antd';
+import {createProduct} from './../../actions/products';
+import {queryRes} from './../../actions/res';
 import {viewProduct} from './../../actions/product';
 import './CreateProduct.scss';
 
@@ -14,23 +11,48 @@ const CreateForm = Form.create;
 const FormItem = Form.Item;
 const Option = Select.Option;
 const OptGroup = Select.OptGroup;
+const SHOW_PARENT = TreeSelect.SHOW_PARENT;
+
+function toTreeData(data, resultArr){
+  data.forEach((item) => {
+    let temp ={};
+    temp.label= item.resName;
+    temp.value= item.id;
+    temp.key= item.id;
+    if(item.subRes) {
+      temp.children=[];
+      toTreeData(item.subRes, temp.children)
+    }
+    resultArr.push(temp)
+  })
+}
 
 class ViewProduct extends Component {
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleReset = this.handleReset.bind(this);
+
+    this.state={
+      value: []
+    }
+  }
+  getInitialState() {
+    return {
+      value: '56565',
+    };
+  }
+
+  componentWillMount() {
+    const {dispatch} = this.props;
+    dispatch(queryRes()); // 产品功能
+    // region
   }
 
   componentDidMount() {
-    const { dispatch } = this.props;
-    dispatch(viewProduct(this.props.routeParams.id));
-    dispatch(queryRes());
+    const {dispatch} = this.props;
+    dispatch(viewProduct(this.props.routeParams.id)); // item query
   }
-
-
-
-
 
   handleReset(e) {
     e.preventDefault();
@@ -40,15 +62,20 @@ class ViewProduct extends Component {
   handleSubmit(e) {
     e.preventDefault();
 
-    const { dispatch } = this.props;
+    const {dispatch} = this.props;
 
     this.props.form.validateFields((errors) => {
       if (errors) {
         return;
       }
       const creds = (this.props.form.getFieldsValue());
+      creds.res = this.state.value;
       dispatch(createProduct(creds, () => browserHistory.push('/product/list')));
     });
+  }
+
+  onChange(value){
+    this.setState({ value });
   }
 
   userExists(rule, value, callback) {
@@ -65,86 +92,73 @@ class ViewProduct extends Component {
     }
   }
 
-  getResArr(data){
-    // if(data && data.length){
-    //   let result =[];
-    //   data.forEach((item) => {
-    //     result.push(item.id)
-    //   });
-    //   return result.join(',')
-    // }else{
-    //   return ''
-    // }
-    let result =[];
-    data.forEach((item) => {
-      result.push(item.id)
-    });
-    return result.join(',')
-  }
-
   render() {
-    const { product: { data} } = this.props;
-    const { getFieldProps, getFieldError, isFieldValidating } = this.props.form;
+    //const product = this.props.product.data;
+    const res = this.props.res.data;
+    const {getFieldProps, getFieldError, isFieldValidating} = this.props.form;
 
-    const resFnProps = getFieldProps('res', {
-      initialValue: this.getResArr(data.productRes)
-    });
-    //alert(data.);
-    const resOpts = () => {
-      const {res} = this.props;
-      const resOptGroup = res.data.map(res => <OptGroup key={res.id} label={res.resName}>
-      {res.subRes.map(subRes => <Option key={subRes.id}>{subRes.resName}</Option>)}
-      </OptGroup>)
-      return (
-        <Select multiple {...resFnProps}>
-      {resOptGroup}
-      </Select>
-      )
-    };
+    const resTreeData= [];
+
+    console.log(res);
+
+    toTreeData(res, resTreeData);
 
     const nameProps = getFieldProps('productName', {
       rules: [
-        { required: true, min: 2, message: '产品名称至少为 2 个字符' },
-        { validator: this.userExists },
+        {required: true, min: 2, message: '产品名称至少为 2 个字符'},
+        {validator: this.userExists},
       ],
-      initialValue: data.productName
+      //initialValue: product.productName
     });
 
     const peopleProps = getFieldProps('maxUser', {
       rules: [
-        { required: true, type: 'number', message: '产品人数只能为数字' },
-        { validator: this.userExists },
+        {required: true, type: 'number', message: '产品人数只能为数字'},
+        {validator: this.userExists},
       ],
-      initialValue: data.maxUser
+     // initialValue: product.maxUser
     });
 
     const periodProps = getFieldProps('counterWay', {
       rules: [
-        { required: true, type: 'number', message: '产品周期只能为数字' },
-        { validator: this.userExists },
+        {required: true, type: 'number', message: '产品周期只能为数字'},
+        {validator: this.userExists},
       ],
-      initialValue: data.counterWay
+     // initialValue: product.counterWay
     });
 
     const spaceProps = getFieldProps('spaceAllowed', {
       rules: [
-        { required: true, type: 'number', message: '产品空间只能为数字' },
-        { validator: this.userExists },
+        {required: true, type: 'number', message: '产品空间只能为数字'},
+        {validator: this.userExists},
       ],
-      initialValue: data.spaceAllowed
+      //initialValue: product.spaceAllowed
     });
 
     const priceProps = getFieldProps('price', {
       rules: [
-        { required: true, type: 'number', message: '产品价格只能为数字' },
-        { validator: this.userExists },
+        {required: true, type: 'number', message: '产品价格只能为数字'},
+        {validator: this.userExists},
       ],
-      initialValue: data.price
+     // initialValue: product.price
     });
 
     const formItemLayout = {
-      labelCol: { span: 4 },
-      wrapperCol: { span: 10 }
+      labelCol: {span: 4},
+      wrapperCol: {span: 10}
+    };
+
+    const tProps = {
+      treeData: resTreeData,
+      value: this.state.value,
+      onChange: this.onChange.bind(this),
+      multiple: true,
+      treeCheckable: true,
+      showCheckedStrategy: SHOW_PARENT,
+      searchPlaceholder: '请选择',
+      style: {
+        width: 300,
+      },
     };
 
     return (
@@ -153,8 +167,9 @@ class ViewProduct extends Component {
     {...formItemLayout}
     label="产品名称"
     hasFeedback
-    >
-    <Input {...nameProps} placeholder="实时校验产品名是否重复" />
+    help={isFieldValidating('productName') ? '校验中...' : (getFieldError('productName') || []).join(', ')}
+  >
+  <Input {...nameProps} placeholder="实时校验产品名是否重复"/>
       </FormItem>
 
       <FormItem
@@ -198,11 +213,11 @@ class ViewProduct extends Component {
     label="产品功能"
     hasFeedback
     >
-    {resOpts()}
-    </FormItem>
+    <TreeSelect {...tProps}  />
+  </FormItem>
 
     <FormItem wrapperCol={{ span:10, offset: 4 }}>
-  <Button type="primary" htmlType="submit">修改</Button>
+  <Button type="primary" htmlType="submit">确定</Button>
       <span className="gap-inline"></span>
       <Button type="ghost" onClick={this.handleReset}>取消</Button>
     </FormItem>
@@ -217,9 +232,9 @@ ViewProduct.propTypes = {
 };
 
 function mapStateToProps(state) {
-  const { res, product } = state;
+  const {res} = state;
   return {
-    res, product
+    res
   };
 }
 

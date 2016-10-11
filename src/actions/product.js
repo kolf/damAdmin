@@ -59,7 +59,7 @@ function updateProductError(message) {
 export function viewProduct(paramid){
   return dispatch => {
     dispatch(requestProduct());
-    return cFetch(API_CONFIG.viewProduct, { method: "GET", params: {id:paramid} }).then((response) => {
+    return cFetch(API_CONFIG.viewProduct, { method: "GET", params: {id:paramid,token:token} }).then((response) => {
       if (response.jsonResult.returnCode === '1') {
         let chanpin=response.jsonResult;
         dispatch(receiveProduct(chanpin));
