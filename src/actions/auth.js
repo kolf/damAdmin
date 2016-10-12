@@ -4,7 +4,8 @@ import {
 } from './../constants/actionTypes';
 import cFetch from './../utils/cFetch';
 import cookie from 'js-cookie';
-
+import localStorage from './../utils/localStorage';
+import {Message} from 'antd';
 import { API_CONFIG } from './../config/api';
 
 function requestLogin(creds) {
@@ -56,10 +57,12 @@ export function loginUser(creds, cbk) {
     cFetch(API_CONFIG.auth, { method: "POST", body: JSON.stringify(creds) }).then((response) => {
       if (response.jsonResult.returnCode === '1') {
         cookie.set('token', response.jsonResult.data.token);
+        localStorage.set('user', response.jsonResult.data);
         dispatch(receiveLogin(response.jsonResult));
+        Message.success(response.jsonResult.msg)
       } else {
         dispatch(loginError(response.jsonResult.msg));
-        cbk(creds.damId, response.jsonResult.msg);
+        cbk(response.jsonResult.msg);
       }
     });
   };
@@ -68,7 +71,7 @@ export function loginUser(creds, cbk) {
 export function logoutUser() {
   return dispatch => {
     dispatch(requestLogout());
-    cookie.remove('access_token');
+    cookie.remove('token');
     dispatch(receiveLogout());
   };
 }

@@ -201,8 +201,7 @@ class CreateProduct extends Component {
 
         <FormItem wrapperCol={{ span:10, offset: 4 }}>
           <Button type="primary" htmlType="submit">确定</Button>
-          <span className="gap-inline"></span>
-          <Button type="ghost" onClick={this.handleReset}>取消</Button>
+          <Button className="gap-left" type="ghost" onClick={this.handleReset}>取消</Button>
         </FormItem>
       </Form>
     );

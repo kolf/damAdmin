@@ -56,7 +56,7 @@ function createUserError(message) {
 export function queryUsers(params) {
   return dispatch => {
     dispatch(requestUsers());
-    return cFetch(API_CONFIG.queryUser, { method: "GET", params: params }).then((res) => {
+    return cFetch(API_CONFIG.queryUser, { method: "POST", body: JSON.stringify(params) }).then((res) => {
       if (res.jsonResult.returnCode === '1') {
         dispatch(receiveUsers(res.jsonResult));
       } else {
@@ -81,8 +81,21 @@ export function createUser(creds) {
   };
 }
 
-
 export function createSysUser(creds) {
+  return dispatch => {
+    dispatch(requestCreateUser());
+    return cFetch(API_CONFIG.createSysUser,{ method: "POST", body: JSON.stringify(creds) }).then((res) => {
+      if (res.jsonResult.returnCode === '1') {
+        dispatch(receiveCreateUser(res.jsonResult));
+      } else {
+        dispatch(createUserError(res.jsonResult.msg));
+        message.error(res.jsonResult.msg);
+      }
+    });
+  };
+}
+
+export function toggleActive(creds) {
   return dispatch => {
     dispatch(requestCreateUser());
     return cFetch(API_CONFIG.createSysUser,{ method: "POST", body: JSON.stringify(creds) }).then((res) => {

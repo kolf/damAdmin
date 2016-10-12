@@ -19,7 +19,6 @@ class CreateUser extends Component {
 
   componentDidMount() {
     const { dispatch } = this.props;
-    //const dispatch=this.props.dispatch;
     dispatch(queryProducts());
   }
 
@@ -38,79 +37,52 @@ class CreateUser extends Component {
         return;
       }
       const creds = (this.props.form.getFieldsValue());
-      //creds.products = creds.products.split(',');
       dispatch(createUser(creds));
     });
   }
 
-  userExists(rule, value, callback) {
-    if (!value) {
-      callback();
-    } else {
-      setTimeout(() => {
-        if (value === 'JasonWood') {
-          callback([new Error('抱歉，该用户名已被占用。')]);
-        } else {
-          callback();
-        }
-      }, 800);
-    }
-  }
-
   render() {
-    const { products: { data, meta, isFetching } } = this.props;
+    const { products: { data} } = this.props;
     const { getFieldProps, getFieldError, isFieldValidating } = this.props.form;
     const accountProps = getFieldProps('damId', {
       rules: [
         { required: true, min: 4, message: '用户名至少为 4 个字符' },
-        { validator: this.userExists },
-      ],
-      trigger: 'onBlur',
+      ]
     });
 
     const nameProps = getFieldProps('userName', {
       rules: [
         { required: true, min: 2, message: '姓名至少为 2 个字符' },
-        { validator: this.userExists },
-      ],
-      trigger: 'onBlur',
+      ]
     });
 
     const passwordProps = getFieldProps('password', {
       rules: [
         { required: true, min: 6, message: '密码至少为 6 个字符' },
-        { validator: this.userExists },
-      ],
-      trigger: 'onBlur',
+      ]
     });
 
     const companyProps = getFieldProps('orgName', {
       rules: [
         { required: true, min: 4, message: '公司名称至少为 4 个字符' },
-        { validator: this.userExists },
-      ],
-      trigger: 'onBlur',
+      ]
     });
 
     const phoneProps = getFieldProps('tel', {
       rules: [
         { required: true, message: '手机号不正确' },
-        { validator: this.userExists },
-      ],
-      trigger: 'onBlur',
+      ]
     });
 
     const emailProps = getFieldProps('email', {
       validate: [{
         rules: [
           { required: true, message: '邮箱为必填项' },
-        ],
-        trigger: 'onBlur',
+        ]
       }, {
         rules: [
           { type: 'email', message: '请输入正确的邮箱地址' },
-        ],
-        trigger: ['onBlur', 'onChange'],
+        ]
       }],
     });
 
@@ -127,77 +99,32 @@ class CreateUser extends Component {
 
     return (
         <Form horizontal className="ant-col-offset-5" onSubmit={this.handleSubmit}>
-          <FormItem
-            {...formItemLayout}
-            label="用户名"
-            hasFeedback
-            required
-            help={isFieldValidating('damId') ? '校验中...' : (getFieldError('damId') || []).join(', ')}
-          >
+          <FormItem {...formItemLayout} label="用户名" help={isFieldValidating('damId') ? '校验中...' : (getFieldError('damId') || []).join(', ')}>
             <Input {...accountProps} />
           </FormItem>
 
-          <FormItem
-            {...formItemLayout}
-            label="密码"
-            hasFeedback
-            required
-          >
+          <FormItem {...formItemLayout} label="密码">
             <Input type="password" {...passwordProps} />
           </FormItem>
 
-          <FormItem
-            label="是否是管理员"
-            {...formItemLayout}
-          >
-            <Switch checkedChildren="是" unCheckedChildren="否" {...getFieldProps('isAdmin', { valuePropName: 'checked' })} />
-          </FormItem>
-
-          <FormItem
-            {...formItemLayout}
-            label="姓名"
-            hasFeedback
-            required
-          >
+          <FormItem {...formItemLayout} label="姓名">
             <Input {...nameProps} />
           </FormItem>
 
-          <FormItem
-            {...formItemLayout}
-            label="手机"
-            hasFeedback
-            required
-          >
+          <FormItem {...formItemLayout} label="手机">
             <Input {...phoneProps} type="tel" />
           </FormItem>
 
-          <FormItem
-            {...formItemLayout}
-            label="公司名称"
-            hasFeedback
-            required
-          >
+          <FormItem {...formItemLayout} label="公司名称">
             <Input {...companyProps} />
           </FormItem>
 
-          <FormItem
-            {...formItemLayout}
-            label="邮箱"
-            hasFeedback
-            required
-          >
+          <FormItem {...formItemLayout} label="邮箱">
             <Input {...emailProps} type="email" />
           </FormItem>
 
-          <FormItem
-            {...formItemLayout}
-            label="产品选择"
-          >
-            <Select
-              multiple
-              placeholder="请选择产品"
-    {...getFieldProps('productids')}
-            >
+          <FormItem {...formItemLayout} label="产品选择">
+            <Select multiple placeholder="请选择产品" {...getFieldProps('productids')}>
               {productsOpts}
             </Select>
           </FormItem>

@@ -16,7 +16,6 @@ class Login extends Component {
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.loginFaileCallback = this.loginFaileCallback.bind(this);
   }
 
   handleSubmit(e) {
@@ -29,21 +28,8 @@ class Login extends Component {
         return false;
       }
       const creds = (this.props.form.getFieldsValue());
-      dispatch(loginUser(creds, this.loginFaileCallback));
+      dispatch(loginUser(creds, (msg) => Message.error(msg)))
     });
-  }
-
-  loginFaileCallback(name, message){
-    const { setFields } = this.props.form;
-    const newValue = {
-      name: {
-        name: "damId",
-        validating: false,
-        value: name,
-        errors: [message]
-      }
-    };
-    setFields(newValue);
   }
 
   render() {

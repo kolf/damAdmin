@@ -32,60 +32,43 @@ function productError(message) {
     isFetching: false,
     message
   };
-
-}function requestUpdataProduct() {
-  return {
-    type: UPDATE_PRODUCT_QERUEST,
-    isFetching: true
-  };
 }
 
-function receiveUpdateProduct(product) {
-  return {
-    type: UPDATE_PRODUCT_SUCCESS,
-    isFetching: false,
-    product
-  };
-}
-
-function updateProductError(message) {
-  return {
-    type: UPDATE_PRODUCT_FAILURE,
-    isFetching: false,
-    message
-  };
-}
-
-export function viewProduct(paramid){
+export function viewProduct(params){
   return dispatch => {
     dispatch(requestProduct());
-    return cFetch(API_CONFIG.viewProduct, { method: "GET", params: {id:paramid,token:token} }).then((response) => {
+    return cFetch(API_CONFIG.viewProduct, { method: "GET", params: params }).then((response) => {
       if (response.jsonResult.returnCode === '1') {
         let chanpin=response.jsonResult;
         dispatch(receiveProduct(chanpin));
       } else {
-        dispatch(productError(response.jsonResult.error_message));
-        message.error(response.jsonResult.error_message);
+        dispatch(productError(response.jsonResult.msg));
+        message.error(response.jsonResult.msg);
       }
     });
   };
 }
 
 export function updateProduct(params, cb){
-  return dispatch => {
-    dispatch(requestUpdataProduct());
+  return () => {
     return cFetch(API_CONFIG.updateProduct, { method: "POST", body:JSON.stringify(params)}).then((response) => {
       if (response.jsonResult.returnCode === '1') {
-        let chanpin=response.jsonResult;
-        dispatch(receiveUpdateProduct(chanpin));
         cb && cb()
       } else {
-        dispatch(updateProductError(response.jsonResult.error_message));
-        message.error(response.jsonResult.error_message);
+        message.error(response.jsonResult.msg);
       }
     });
   };
 }
 
-
-
+export function activeProduct(params, cb){
+  return () => {
+    return cFetch(API_CONFIG.activeProduct, { method: "GET", params: params}).then((response) => {
+      if (response.jsonResult.returnCode === '1') {
+        cb && cb(response.jsonResult.msg)
+      } else {
+        message.error(response.jsonResult.msg);
+      }
+    });
+  };
+}

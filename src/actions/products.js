@@ -52,10 +52,10 @@ function CreateProductError(message) {
   };
 }
 
-export function queryProducts(params = { pageNum: 1, pageSize: 10 }) {
+export function queryProducts(params) {
   return dispatch => {
     dispatch(requestProducts());
-    return cFetch(API_CONFIG.products, { method: "GET", params: params }).then((response) => {
+    return cFetch(API_CONFIG.products, { method: "POST", body: JSON.stringify(params) }).then((response) => {
       if (response.jsonResult.returnCode === '1') {
         dispatch(receiveProducts(response.jsonResult));
       } else {

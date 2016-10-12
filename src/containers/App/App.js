@@ -33,6 +33,8 @@ class App extends Component {
   }
 
   renderAuthenticatedPage() {
+    const {routes} = this.props;
+
     return (
       <div className="ant-layout-aside">
         <aside className="ant-layout-sider">
@@ -78,21 +80,18 @@ class App extends Component {
         <div className="ant-layout-main">
           <div className="ant-layout-header">
           <Menu mode="horizontal" onClick={this.handleLogout}>
-              <SubMenu className="pull-right" title={<span><Icon type="user" /></span>}>
-                <Menu.Item key="setting:4">
-                      <Link to={'/user/aboutMySelf'}>{cookie.get('damId')}</Link>
-                </Menu.Item>
+              <SubMenu className="pull-right" title={<span><Icon type="user" />admin</span>}>
                 <Menu.Item key="setting:5">
-                  <Link to={'/logout'}>退出</Link>
+                  <Icon type="question" />退出
                 </Menu.Item>
               </SubMenu>
             </Menu>
           </div>
           <div className="ant-layout-breadcrumb">
             <Breadcrumb>
-              <Breadcrumb.Item>首页</Breadcrumb.Item>
-              <Breadcrumb.Item>用户管理</Breadcrumb.Item>
-              <Breadcrumb.Item>用户列表</Breadcrumb.Item>
+              {
+                routes.map(item => <Breadcrumb.Item>{item.breadcrumbName}</Breadcrumb.Item>)
+              }
             </Breadcrumb>
           </div>
           <div className="ant-layout-container">

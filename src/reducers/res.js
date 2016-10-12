@@ -10,7 +10,6 @@ export default function res(state = initialState.res, action) {
         isFetching: true
       });
     case RES_SUCCESS:
-      console.log(action);
       return Object.assign({}, {
         isFetching: false,
         errorMessage: '',

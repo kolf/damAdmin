@@ -4,7 +4,6 @@ import {
 import initialState from './initialState';
 
 export default function product(state = initialState.product, action) {
-  console.log(action);
   switch (action.type) {
     case PRODUCT_QERUEST:
       return Object.assign({}, state, {
@@ -14,11 +13,6 @@ export default function product(state = initialState.product, action) {
       return Object.assign({}, {
         isFetching: false,
         errorMessage: '',
-       /* meta: {
-          total: action.product.data.total,
-          pageSize: action.product.data.pageSize,
-          pageNum: action.product.data.pageNum
-        },*/
         data: action.product.data
       });
     case PRODUCT_FAILURE:
