@@ -29,33 +29,12 @@ function productsError(message) {
     message
   };
 }
-function requestCreateProduct() {
-  return {
-    type: CREATE_PRODUCT_QERUEST,
-    isFetching: true
-  };
-}
-
-function receiveCreateProduct(products) {
-  return {
-    type: PRODUCT_SUCCESS,
-    isFetching: false,
-    products
-  };
-}
-
-function CreateProductError(message) {
-  return {
-    type: PRODUCT_FAILURE,
-    isFetching: false,
-    message
-  };
-}
 
 export function queryProducts(params) {
   return dispatch => {
     dispatch(requestProducts());
     return cFetch(API_CONFIG.products, { method: "POST", body: JSON.stringify(params) }).then((response) => {
+      console.log(response.jsonResult);
       if (response.jsonResult.returnCode === '1') {
         dispatch(receiveProducts(response.jsonResult));
       } else {
@@ -67,14 +46,11 @@ export function queryProducts(params) {
 }
 
 export function createProduct(params, cb) {
-  return dispatch => {
-    dispatch(requestCreateProduct());
+  return () => {
     return cFetch(API_CONFIG.createProduct, { method: "POST", body: JSON.stringify(params) }).then((response) => {
       if (response.jsonResult.returnCode === '1') {
-        dispatch(receiveCreateProduct(response.jsonResult));
         cb(response.jsonResult.msg);
       } else {
-        dispatch(CreateProductError(response.jsonResult.msg));
         message.error(response.jsonResult.msg);
       }
     });

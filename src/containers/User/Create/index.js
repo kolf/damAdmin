@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {browserHistory} from 'react-router';
 import {Button, Form, Input, Select, Switch, Message} from 'antd';
-import {updateUser, getUser} from '../../../actions/users';
+import {createUser} from '../../../actions/users';
 import {queryProducts} from '../../../actions/products';
 import re from '../../../config/regexp';
 
@@ -10,7 +10,7 @@ const CreateForm = Form.create;
 const FormItem = Form.Item;
 const Option = Select.Option;
 
-class UpdateUser extends Component {
+class CreateUser extends Component {
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -24,9 +24,6 @@ class UpdateUser extends Component {
       pageSize: 100,
       state: 1
     }));
-    dispatch(getUser({
-      id: this.props.routeParams.id
-    }))
   }
 
   handleReset(e) {
@@ -45,8 +42,7 @@ class UpdateUser extends Component {
         return;
       }
       const creds = (this.props.form.getFieldsValue());
-      creds.id = this.props.routeParams.id;
-      dispatch(updateUser(creds, (msg) => {
+      dispatch(createUser(creds, (msg) => {
         Message.success(msg);
         setTimeout(()=> browserHistory.push('/user/list'), 1000)
       }));
@@ -55,29 +51,34 @@ class UpdateUser extends Component {
 
   render() {
     const productList = this.props.products.data;
-    const userInfo = this.props.user.data;
-    const {getFieldProps} = this.props.form;
+    const {getFieldProps, getFieldError, isFieldValidating} = this.props.form;
+    const accountProps = getFieldProps('damId', {
+      rules: [
+        {required: true, min: 4, message: '用户名至少为 4 个字符'},
+      ]
+    });
 
     const nameProps = getFieldProps('userName', {
-      initialValue: userInfo.userName
+      rules: [
+        {required: true, min: 2, message: '姓名至少为 2 个字符'},
+      ]
     });
 
-    const passwordProps = getFieldProps('damPasswd', {});
-
-    const remarkProps = getFieldProps('remark', {
-      initialValue: userInfo.remark
+    const passwordProps = getFieldProps('damPasswd', {
+      rules: [
+        {required: true, whitespace: true, min: 6, message: '密码至少为 6 个字符'},
+      ]
     });
 
-    const companyProps = getFieldProps('orgName', {
-      initialValue: userInfo.orgName
-    });
+    const companyProps = getFieldProps('orgName', {});
 
-    const productsProps = getFieldProps('productids', {
-      initialValue: userInfo.productids
-    });
+    const remarkProps = getFieldProps('remark', {});
+
+    const productsProps = getFieldProps('productids', {});
 
     const phoneProps = getFieldProps('mobile', {
       rules: [
+        {required: true, max: 11, message: '请填写手机号'},
         {validator: (rule, value, callback) => {
           if (!re.phone.test(value)) {
             callback('手机号格式不正确');
@@ -91,15 +92,24 @@ class UpdateUser extends Component {
     const emailProps = getFieldProps('mail', {
       validate: [{
         rules: [
+          {required: true, message: '邮箱为必填项'},
+        ]
+      }, {
+        rules: [
           {type: 'email', message: '请输入正确的邮箱地址'},
         ]
       }],
-      initialValue: userInfo.mail
     });
 
     const productsOpts = (data) => data.map((item) => {
       return <Option key={item.id}>{item.productName}</Option>
     });
+
+    // let productsOpts = [];
+    //
+    // for (let i = 0; i < data.length; i++) {
+    //   productsOpts.push(<Option key={data[i].id}>{data[i].productName}</Option>);
+    // }
 
     const formItemLayout = {
       labelCol: {span: 4},
@@ -108,8 +118,9 @@ class UpdateUser extends Component {
 
     return (
       <Form horizontal className="ant-col-offset-5" onSubmit={this.handleSubmit}>
-        <FormItem {...formItemLayout} label="用户名">
-          {userInfo.damId}
+        <FormItem {...formItemLayout} label="用户名"
+                                      help={isFieldValidating('damId') ? '校验中...' : (getFieldError('damId') || []).join(', ')}>
+          <Input {...accountProps} />
         </FormItem>
 
         <FormItem {...formItemLayout} label="密码">
@@ -121,7 +132,7 @@ class UpdateUser extends Component {
         </FormItem>
 
         <FormItem {...formItemLayout} label="手机">
-          <Input {...phoneProps} type="text"/>
+          <Input {...phoneProps} type="tel"/>
         </FormItem>
 
         <FormItem {...formItemLayout} label="公司名称">
@@ -137,11 +148,9 @@ class UpdateUser extends Component {
         </FormItem>
 
         <FormItem {...formItemLayout} label="产品选择">
-          {
-            productList && <Select multiple placeholder="请选择产品" {...productsProps}>
-              {productsOpts(productList)}
-            </Select>
-          }
+          {productList && <Select multiple placeholder="请选择产品" {...productsProps}>
+            {productsOpts(productList)}
+          </Select>}
         </FormItem>
 
         <FormItem wrapperCol={{ span: 8, offset: 4 }}>
@@ -153,17 +162,16 @@ class UpdateUser extends Component {
   }
 }
 
-UpdateUser.propTypes = {
+CreateUser.propTypes = {
   form: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
-  const {products, user} = state;
+  const {products} = state;
   return {
-    products,
-    user
+    products
   };
 }
 
-export default connect(mapStateToProps)(CreateForm()(UpdateUser));
+export default connect(mapStateToProps)(CreateForm()(CreateUser));

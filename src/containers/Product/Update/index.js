@@ -2,15 +2,24 @@ import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {browserHistory} from 'react-router';
 import {Button, Form, Input, Select, InputNumber, Tree, Message} from 'antd';
-import {queryRes} from './../../actions/res';
-import {viewProduct, updateProduct} from './../../actions/product';
-import './CreateProduct.scss';
+import {queryRes} from '../../../actions/res';
+import {getProduct, updateProduct} from '../../../actions/product';
+
+import './index.scss';
 
 const CreateForm = Form.create;
 const FormItem = Form.Item;
 const TreeNode = Tree.TreeNode;
 
-class ViewProduct extends Component {
+const productRes = data => {
+  if(data){
+    return data.map((item) => {
+      return `${item.id}`
+    });
+  }
+};
+
+class ProductUpdate extends Component {
   static propTypes = {
     viewProduct: PropTypes.func,
     updateProduct: PropTypes.func,
@@ -38,14 +47,19 @@ class ViewProduct extends Component {
 
   componentDidMount() {
     const {dispatch} = this.props;
-    dispatch(viewProduct({
+    dispatch(getProduct({
       id: this.props.routeParams.id
+    }, (data)=> {
+      this.setState({
+        checkedRes: productRes(data.productRes)
+      });
     })); // item query
   }
 
   handleReset(e) {
-    e.preventDefault();
-    this.props.form.resetFields();
+    // e.preventDefault();
+    // this.props.form.resetFields();
+    browserHistory.push('/product/list')
   }
 
   handleSubmit(e) {
@@ -76,6 +90,8 @@ class ViewProduct extends Component {
   }
 
   render() {
+    console.log(this.state.checkedRes);
+
     const productData = this.props.product.data;
 
     const res = this.props.res.data;
@@ -140,14 +156,6 @@ class ViewProduct extends Component {
       }
     });
 
-    const productRes = data => {
-      if(data){
-        return data.map((item) => {
-          return `${item.id}`
-        });
-      }
-    };
-
     return (
       <Form horizontal className="ant-col-offset-5" onSubmit={this.handleSubmit}>
         <FormItem {...formItemLayout} label="产品名称" help={isFieldValidating('productName') ? '校验中...' : (getFieldError('productName') || []).join(', ')}>
@@ -183,7 +191,7 @@ class ViewProduct extends Component {
               <label>产品功能</label>
             </div>
             <div className="ant-col-10 tree-box">
-              <Tree checkable defaultCheckedKeys={productRes(productData.productRes)} onCheck={this.onCheckRes.bind(this)}>
+              <Tree checkable multiple checkedKeys={this.state.checkedRes} onCheck={this.onCheckRes.bind(this)}>
                 {loop(res)}
               </Tree>
             </div>
@@ -192,14 +200,14 @@ class ViewProduct extends Component {
 
         <FormItem wrapperCol={{ span:10, offset: 4 }}>
           <Button type="primary" htmlType="submit">确定</Button>
-          <Button type="ghost" className="gap-left" onClick={this.handleReset}>重置</Button>
+          <Button type="ghost" className="gap-left" onClick={this.handleReset}>取消</Button>
         </FormItem>
       </Form>
     );
   }
 }
 
-ViewProduct.propTypes = {
+ProductUpdate.propTypes = {
   form: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired
 };
@@ -212,4 +220,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(CreateForm()(ViewProduct));
+export default connect(mapStateToProps)(CreateForm()(ProductUpdate));

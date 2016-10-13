@@ -1,19 +1,17 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import {Link} from 'react-router';
-import CustomTable from './../../components/CustomTable';
+import {Link, browserHistory} from 'react-router';
+import CustomTable from '../../../components/CustomTable';
 
-import {queryProducts} from '../../actions/products';
-import {activeProduct} from '../../actions/product';
+import {queryProducts} from '../../../actions/products';
+import {activeProduct} from '../../../actions/product';
 import {Form, Input, Row, Col, Button, InputNumber, Switch} from 'antd';
 
 const FormItem = Form.Item;
 const ButtonGroup = Button.Group;
 const CreateForm = Form.create;
 
-import './Products.scss';
-
-class Products extends Component {
+class ProductList extends Component {
   constructor(props) {
     super(props);
     this.handleTableChange = this.handleTableChange.bind(this);
@@ -39,13 +37,14 @@ class Products extends Component {
 
   handleReset(e) {
     e.preventDefault();
-    const {dispatch} = this.props;
-    this.props.form.resetFields();
+    const {form} = this.props;
+    form.resetFields();
 
-    dispatch(queryProducts({
-      pageSize: this.state.pageSize,
-      pageNum: 1
-    }));
+    const creds = (form.getFieldsValue());
+
+    Object.assign(this.state.query, creds);
+
+    this.queryList()
   }
 
   handleSubmit(e) {
@@ -70,13 +69,16 @@ class Products extends Component {
       id: id,
       state: status
     }, (msg) => {
-      console.log(msg)
       this.queryList()
     }));
   }
 
+  gotoUpdate(id){
+    browserHistory.push(`/product/update/${id}`)
+  }
+
   handleTableChange(pagination, filters = {}) {
-    const pageParams = {pageNum: pagination.page, pageSize: pagination.pageSize};
+    const pageParams = {pageNum: pagination.current, pageSize: pagination.pageSize};
     const filtersField = {};
 
     if (Object.keys(filters).length !== 0) {
@@ -129,8 +131,8 @@ class Products extends Component {
       key: 'status',
       width: 200,
       filters: [
-        { text: '开', value: '1' },
-        { text: '关', value: '0' },
+        { text: '已启用', value: '1' },
+        { text: '已禁用', value: '0' },
       ],
       // filterMultiple: false,
       render: (item) => (
@@ -138,7 +140,7 @@ class Products extends Component {
           {/*<Switch onChange={this.activeProduct.bind(this, item.id, item.status)} checkedChildren={'开'} unCheckedChildren={'关'} defaultChecked={item.status}/>*/}
           {item.status == 1 && <Button onClick={this.activeProduct.bind(this, item.id, item.status)} type="primary">已启用</Button>}
           {item.status == 0 && <Button onClick={this.activeProduct.bind(this, item.id, item.status)} >已禁用</Button>}
-          <Button className="gap-left"><Link to={`/product/view/${item.id}`}>修改</Link></Button>
+          <Button className="gap-left" onClick={this.gotoUpdate.bind(this, item.id)}>修改</Button>
         </div>
       )
     }];
@@ -147,8 +149,11 @@ class Products extends Component {
       showSizeChanger: true,
       total: meta.total,
       pageSize: this.state.query.pageSize,
-      page: meta.pageNum,
-      pageSizeOptions: ['10', '20', '40', '100']
+      page: this.state.query.pageNum,
+      pageSizeOptions: ['10', '20', '40', '100'],
+      "showTotal": () => {
+        return '共 ' + meta.total + ' 条';
+      },
     };
 
     const formItemLayout = {
@@ -181,7 +186,7 @@ class Products extends Component {
           </Row>
           <div className="text-center">
             <Button type="primary" htmlType="submit">搜索</Button>
-            <Button type="ghost" onClick={this.handleReset}>清除</Button>
+            <Button type="ghost" className="gap-left" onClick={this.handleReset}>清除</Button>
           </div>
         </Form>
         <div className="pad-v-s">
@@ -201,7 +206,7 @@ class Products extends Component {
   }
 }
 
-Products.propTypes = {
+ProductList.propTypes = {
   form: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired
 };
@@ -213,4 +218,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(CreateForm()(Products));
+export default connect(mapStateToProps)(CreateForm()(ProductList));

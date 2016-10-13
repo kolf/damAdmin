@@ -1,11 +1,11 @@
 import {
   USERS_QERUEST, USERS_SUCCESS, USERS_FAILURE,
-  CREATE_USER_QERUEST, CREATE_USER_SUCCESS, CREATE_USER_FAILURE
+  USER_QERUEST, USER_SUCCESS, USER_FAILURE,
 } from './../constants/actionTypes';
 import cFetch from './../utils/cFetch';
 
-import { API_CONFIG } from './../config/api';
-import { message } from 'antd';
+import {API_CONFIG} from './../config/api';
+import {Message} from 'antd';
 
 function requestUsers() {
   return {
@@ -22,88 +22,111 @@ function receiveUsers(users) {
   };
 }
 
-function usersError(message) {
+function usersError(Message) {
   return {
     type: USERS_FAILURE,
     isFetching: false,
-    message
+    Message
   };
 }
 
-function requestCreateUser(user) {
+function requestUser() {
   return {
-    type: CREATE_USER_QERUEST,
-    isFetching: true,
+    type: USER_QERUEST,
+    isFetching: true
+  };
+}
+
+function receiveUser(user) {
+  return {
+    type: USER_SUCCESS,
+    isFetching: false,
     user
   };
 }
 
-function receiveCreateUser() {
+function userError(Message) {
   return {
-    type: CREATE_USER_SUCCESS,
-    isFetching: false
-  };
-}
-
-function createUserError(message) {
-  return {
-    type: CREATE_USER_FAILURE,
+    type: USER_FAILURE,
     isFetching: false,
-    message
+    Message
   };
 }
 
 export function queryUsers(params) {
   return dispatch => {
     dispatch(requestUsers());
-    return cFetch(API_CONFIG.queryUser, { method: "POST", body: JSON.stringify(params) }).then((res) => {
+    return cFetch(API_CONFIG.queryUser, {method: "POST", body: JSON.stringify(params)}).then((res) => {
       if (res.jsonResult.returnCode === '1') {
         dispatch(receiveUsers(res.jsonResult));
       } else {
         dispatch(usersError(res.jsonResult.msg));
-        message.error(res.jsonResult.msg);
+        Message.error(res.jsonResult.msg);
       }
     });
   };
 }
 
-export function createUser(creds) {
+export function getUser(params) {
   return dispatch => {
-    dispatch(requestCreateUser());
-    return cFetch(API_CONFIG.createUser,{ method: "POST", body: JSON.stringify(creds) }).then((res) => {
+    dispatch(requestUser());
+    return cFetch(API_CONFIG.getUser, {method: "GET", params: params}).then((res) => {
       if (res.jsonResult.returnCode === '1') {
-        dispatch(receiveCreateUser(res.jsonResult));
+        dispatch(receiveUser(res.jsonResult));
       } else {
-        dispatch(createUserError(res.jsonResult.msg));
-        message.error(res.jsonResult.msg);
+        dispatch(userError(res.jsonResult.msg));
+        Message.error(res.jsonResult.msg);
       }
     });
   };
 }
 
-export function createSysUser(creds) {
-  return dispatch => {
-    dispatch(requestCreateUser());
-    return cFetch(API_CONFIG.createSysUser,{ method: "POST", body: JSON.stringify(creds) }).then((res) => {
+export function updateUser(creds, cb) {
+  return () => {
+    return cFetch(API_CONFIG.updateUser, {method: "POST", body: JSON.stringify(creds)}).then((res) => {
       if (res.jsonResult.returnCode === '1') {
-        dispatch(receiveCreateUser(res.jsonResult));
+        cb && cb(res.jsonResult.msg)
       } else {
-        dispatch(createUserError(res.jsonResult.msg));
-        message.error(res.jsonResult.msg);
+        Message.error(res.jsonResult.msg);
       }
     });
   };
 }
 
-export function toggleActive(creds) {
+export function createUser(creds, cb) {
+  return () => {
+    return cFetch(API_CONFIG.createUser, {method: "POST", body: JSON.stringify(creds)}).then((res) => {
+      if (res.jsonResult.returnCode === '1') {
+        cb && cb(res.jsonResult.msg)
+      } else {
+        Message.error(res.jsonResult.msg);
+      }
+    });
+  };
+}
+
+export function createSysUser(creds, cb) {
   return dispatch => {
     dispatch(requestCreateUser());
-    return cFetch(API_CONFIG.createSysUser,{ method: "POST", body: JSON.stringify(creds) }).then((res) => {
+    return cFetch(API_CONFIG.createSysUser, {method: "POST", body: JSON.stringify(creds)}).then((res) => {
       if (res.jsonResult.returnCode === '1') {
         dispatch(receiveCreateUser(res.jsonResult));
+        cb && cb(res.jsonResult.msg)
       } else {
         dispatch(createUserError(res.jsonResult.msg));
-        message.error(res.jsonResult.msg);
+        Message.error(res.jsonResult.msg);
+      }
+    });
+  };
+}
+
+export function toggleActive(params, cb) {
+  return () => {
+    return cFetch(API_CONFIG.toggleActive, {method: "GET", params: params}).then((res) => {
+      if (res.jsonResult.returnCode === '1') {
+        cb && cb(res.jsonResult.msg)
+      } else {
+        Message.error(res.jsonResult.msg);
       }
     });
   };

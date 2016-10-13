@@ -3,6 +3,7 @@ import { routerReducer } from 'react-router-redux';
 
 import auth from './auth';
 import users from './users';
+import user from './user';
 import products from './products';
 import product from './product';
 import res from './res';
@@ -17,7 +18,8 @@ const rootReducer = combineReducers({
   product,
   res,
   sysRes,
-  systemUsers
+  systemUsers,
+  user
 });
 
 export default rootReducer;

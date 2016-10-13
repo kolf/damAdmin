@@ -1,11 +1,9 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {browserHistory} from 'react-router';
-import {Button, Form, Input, Select, InputNumber, TreeSelect} from 'antd';
-import {createProduct} from './../../actions/products';
-import {queryRes} from './../../actions/res';
-
-import './CreateProduct.scss';
+import {Button, Form, Input, Select, InputNumber, TreeSelect, Message } from 'antd';
+import {createProduct} from '../../../actions/products';
+import {queryRes} from '../../../actions/res';
 
 const CreateForm = Form.create;
 const FormItem = Form.Item;
@@ -45,8 +43,9 @@ class CreateProduct extends Component {
   }
 
   handleReset(e) {
-    e.preventDefault();
-    this.props.form.resetFields();
+    // e.preventDefault();
+    // this.props.form.resetFields();
+    browserHistory.push('/product/list')
   }
 
   handleSubmit(e) {
@@ -60,7 +59,10 @@ class CreateProduct extends Component {
       }
       const creds = (this.props.form.getFieldsValue());
       creds.res = this.state.value;
-      dispatch(createProduct(creds, () => browserHistory.push('/product/list')));
+      dispatch(createProduct(creds, (msg) => {
+        Message.success('产品创建成功！');
+        setTimeout(() => browserHistory.push('/product/list'), 1000)
+      }));
     });
   }
 
@@ -68,62 +70,47 @@ class CreateProduct extends Component {
     this.setState({ value });
   }
 
-  userExists(rule, value, callback) {
-    if (!value) {
-      callback();
-    } else {
-      setTimeout(() => {
-        if (value === 'JasonWood') {
-          callback([new Error('抱歉，该用户名已被占用。')]);
-        } else {
-          callback();
-        }
-      }, 800);
-    }
-  }
-
   render() {
     const {getFieldProps, getFieldError, isFieldValidating} = this.props.form;
     const res = this.props.res.data;
     const resTreeData= [];
-
-    console.log(res);
-
     toTreeData(res, resTreeData);
 
     const nameProps = getFieldProps('productName', {
       rules: [
         {required: true, min: 2, message: '产品名称至少为 2 个字符'},
-        {validator: this.userExists},
       ],
     });
 
     const peopleProps = getFieldProps('maxUser', {
       rules: [
         {required: true, type: 'number', message: '产品人数只能为数字'},
-        {validator: this.userExists},
       ],
     });
 
     const periodProps = getFieldProps('counterWay', {
       rules: [
         {required: true, type: 'number', message: '产品周期只能为数字'},
-        {validator: this.userExists},
       ],
     });
 
     const spaceProps = getFieldProps('spaceAllowed', {
       rules: [
         {required: true, type: 'number', message: '产品空间只能为数字'},
-        {validator: this.userExists},
       ],
     });
 
     const priceProps = getFieldProps('price', {
       rules: [
         {required: true, type: 'number', message: '产品价格只能为数字'},
-        {validator: this.userExists},
+
       ],
+    });
+
+    const remarkProps = getFieldProps('remark', {
+      rules: [
+        {required: true, message: '请填写产品介绍'}
+      ]
     });
 
     const formItemLayout = {
@@ -155,41 +142,30 @@ class CreateProduct extends Component {
           <Input {...nameProps} placeholder="实时校验产品名是否重复"/>
         </FormItem>
 
-        <FormItem
-          {...formItemLayout}
-          label="产品人数"
-          hasFeedback
-        >
-          <InputNumber {...peopleProps} min={1} max={10} defaultValue={3}/>
+        <FormItem {...formItemLayout} label="产品介绍">
+          <Input placeholder="请填写产品介绍" type="textarea" {...remarkProps} />
+        </FormItem>
+
+        <FormItem {...formItemLayout} label="产品人数">
+          <InputNumber {...peopleProps} min={1} max={100000}/>
           <span className="ant-form-text">人</span>
         </FormItem>
 
-        <FormItem
-          {...formItemLayout}
-          label="产品周期"
-          hasFeedback
-        >
-          <InputNumber {...periodProps} min={1} max={10} defaultValue={12}/>
+        <FormItem {...formItemLayout} label="产品周期">
+          <InputNumber {...periodProps} min={1} max={100000}/>
           <span className="ant-form-text">月</span>
         </FormItem>
 
-        <FormItem
-          {...formItemLayout}
-          label="产品空间"
-          hasFeedback
-        >
-          <InputNumber {...spaceProps} min={1} max={10} defaultValue={1}/>
+        <FormItem {...formItemLayout} label="产品空间">
+          <InputNumber {...spaceProps} min={1} max={100000}/>
           <span className="ant-form-text">G</span>
         </FormItem>
 
-        <FormItem
-          {...formItemLayout}
-          label="产品价格"
-          hasFeedback
-        >
-          <InputNumber {...priceProps} min={1} max={10} defaultValue={100}/>
+        <FormItem {...formItemLayout} label="产品价格">
+          <InputNumber {...priceProps} min={1} max={100000}/>
           <span className="ant-form-text">元</span>
         </FormItem>
+
 
         <FormItem
           {...formItemLayout}
@@ -201,7 +177,7 @@ class CreateProduct extends Component {
 
         <FormItem wrapperCol={{ span:10, offset: 4 }}>
           <Button type="primary" htmlType="submit">确定</Button>
-          <Button className="gap-left" type="ghost" onClick={this.handleReset}>取消</Button>
+          <Button type="ghost" className="gap-left" onClick={this.handleReset}>取消</Button>
         </FormItem>
       </Form>
     );

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 
 import { connect } from 'react-redux';
-import './Home.scss';
 
 class Home extends Component {
   constructor(props) {
@@ -9,7 +8,7 @@ class Home extends Component {
   }
 
   render() {
-    return <div>登陆成功！</div>;
+    return <div>首页</div>;
   }
 }
 

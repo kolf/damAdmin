@@ -2,8 +2,7 @@
  * Created by linsheng.yan on 2016/10/9.
  */
 import {
-  PRODUCT_QERUEST, PRODUCT_SUCCESS, PRODUCT_FAILURE,
-  UPDATE_PRODUCT_QERUEST,UPDATE_PRODUCT_SUCCESS, UPDATE_PRODUCT_FAILURE
+  PRODUCT_QERUEST, PRODUCT_SUCCESS, PRODUCT_FAILURE
 } from './../constants/actionTypes';
 import cFetch from './../utils/cFetch';
 import cookie from 'js-cookie';
@@ -34,13 +33,14 @@ function productError(message) {
   };
 }
 
-export function viewProduct(params){
+export function getProduct(params, cb){
   return dispatch => {
     dispatch(requestProduct());
-    return cFetch(API_CONFIG.viewProduct, { method: "GET", params: params }).then((response) => {
+    return cFetch(API_CONFIG.getProduct, { method: "GET", params: params }).then((response) => {
       if (response.jsonResult.returnCode === '1') {
         let chanpin=response.jsonResult;
         dispatch(receiveProduct(chanpin));
+        cb && cb(chanpin.data)
       } else {
         dispatch(productError(response.jsonResult.msg));
         message.error(response.jsonResult.msg);
@@ -50,11 +50,14 @@ export function viewProduct(params){
 }
 
 export function updateProduct(params, cb){
-  return () => {
+  return dispatch => {
+    // dispatch(requestProduct());
     return cFetch(API_CONFIG.updateProduct, { method: "POST", body:JSON.stringify(params)}).then((response) => {
       if (response.jsonResult.returnCode === '1') {
+        // dispatch(receiveProduct(response.jsonResult));
         cb && cb()
       } else {
+        // dispatch(productError(response.jsonResult.msg));
         message.error(response.jsonResult.msg);
       }
     });

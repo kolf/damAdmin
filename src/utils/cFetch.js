@@ -2,9 +2,9 @@ import fetch from 'isomorphic-fetch';
 require('es6-promise').polyfill();
 
 import cookie from 'js-cookie';
-import { API_CONFIG } from './../config/api';
+import {API_CONFIG} from './../config/api';
 
-import { Modal } from 'antd';
+import {Modal} from 'antd';
 
 const errorMessages = (res) => `${res.status} ${res.statusText}`;
 
@@ -34,7 +34,7 @@ function check404(res) {
 }
 
 function jsonParse(res) {
-  return res.json().then(jsonResult => ({ ...res, jsonResult }));
+  return res.json().then(jsonResult => ({...res, jsonResult}));
 }
 
 function setUriParam(keys, value, keyPostfix) {
@@ -54,11 +54,11 @@ function setUriParam(keys, value, keyPostfix) {
 function getUriParam(keys, object) {
   const array = [];
 
-  if (object instanceof(Array)) {
+  if (object instanceof (Array)) {
     object.forEach((value) => {
       array.push(setUriParam(keys, value, '[]'));
     });
-  } else if (object instanceof(Object)) {
+  } else if (object instanceof (Object)) {
     for (const key in object) {
       if (object.hasOwnProperty(key)) {
         const value = object[key];
@@ -95,6 +95,17 @@ function toQueryString(object) {
 // TODO: 用户登陆之后，需保存Token至cookie
 function cFetch(url, options) {
   let mergeUrl = API_CONFIG.baseUri + url;
+
+  if(options.method === 'POST'){
+    let body = JSON.parse(options.body);
+    if(body.pageNum){
+      mergeUrl+= '&pageNum=' + body.pageNum;
+    }
+    if(body.pageSize){
+      mergeUrl+= '&pageSize=' + body.pageSize;
+    }
+  }
+
   const defaultOptions = {
     method: 'GET',
     headers: {
@@ -107,7 +118,7 @@ function cFetch(url, options) {
 
   // add query params to url when method is GET
   if (opts && opts.method == "GET" && opts['params']) {
-    if(mergeUrl.indexOf('?')!==-1){
+    if (mergeUrl.indexOf('?') !== -1) {
       mergeUrl = mergeUrl + '&' + toQueryString(opts['params']);
     }
   }
@@ -121,9 +132,9 @@ function cFetch(url, options) {
     .then(check401)
     .then(check404)
     .then(jsonParse)
-    .catch( (error) => {
+    .catch((error) => {
       console.log('request failed', error); // eslint-disable-line  no-console
-      return { error };
+      return {error};
     });
 }
 

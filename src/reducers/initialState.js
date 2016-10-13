@@ -43,5 +43,9 @@ export default {
   systemUsers: {
     isFetching: false,
     data: []
+  },
+  user: {
+    isFetching: false,
+    data: {}
   }
 };
