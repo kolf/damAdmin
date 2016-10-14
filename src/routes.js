@@ -1,8 +1,8 @@
 import React from 'react';
 import { Route, IndexRoute, Redirect } from 'react-router';
 
-import App from './containers/App/App';
-import Home from './containers/Home/Home';
+import App from './containers/App/index';
+import Home from './containers/Home/index';
 
 import Users from './containers/User/List/index';
 import CreateUser from './containers/User/Create/index';

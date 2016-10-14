@@ -22,7 +22,7 @@ class UpdateUser extends Component {
     dispatch(queryProducts({
       pageNum: 1,
       pageSize: 100,
-      state: 1
+      status: 1
     }));
     dispatch(getUser({
       id: this.props.routeParams.id
@@ -85,7 +85,8 @@ class UpdateUser extends Component {
             callback();
           }
         }}
-      ]
+      ],
+      initialValue: userInfo.mobile
     });
 
     const emailProps = getFieldProps('mail', {

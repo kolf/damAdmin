@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Form, Input, Button, Message } from 'antd';
 import { loginUser } from './../../actions/auth';
 
-import './Login.scss';
+import './style.scss';
 
 const createForm = Form.create;
 const FormItem = Form.Item;

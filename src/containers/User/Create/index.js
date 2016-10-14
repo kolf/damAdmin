@@ -22,7 +22,7 @@ class CreateUser extends Component {
     dispatch(queryProducts({
       pageNum: 1,
       pageSize: 100,
-      state: 1
+      status: 1
     }));
   }
 

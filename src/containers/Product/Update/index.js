@@ -5,7 +5,7 @@ import {Button, Form, Input, Select, InputNumber, Tree, Message} from 'antd';
 import {queryRes} from '../../../actions/res';
 import {getProduct, updateProduct} from '../../../actions/product';
 
-import './index.scss';
+import './style.scss';
 
 const CreateForm = Form.create;
 const FormItem = Form.Item;
