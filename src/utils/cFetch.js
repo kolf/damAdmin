@@ -106,7 +106,6 @@ function cFetch(url, options) {
       mergeUrl+= '&pageSize=' + body.pageSize;
     }
 
-    options.body= JSON.stringify(body);
   }
 
   const defaultOptions = {
@@ -128,7 +127,7 @@ function cFetch(url, options) {
 
   opts.headers = {
     ...opts.headers,
-    'Authorization': cookie.get('access_token') || ''
+    // 'Authorization': cookie.get('access_token') || ''
   };
 
   return fetch(mergeUrl, opts)
