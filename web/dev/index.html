@@ -24,11 +24,11 @@
       $.ajax({
         type: 'POST',
         url: 'http://dev.dam-server.vcg.com/damSys/syslogin',
+        contentType:"application/json",
         data: {
           damId: id,
           damPasswd: dampassword
-        },
-        dataType: 'json'
+        }
       }).done(function (data) {
         console.log(data)
       })
