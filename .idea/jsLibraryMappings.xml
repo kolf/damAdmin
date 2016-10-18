@@ -2,6 +2,8 @@
 <project version="4">
   <component name="JavaScriptLibraryMappings">
     <file url="file://$PROJECT_DIR$" libraries="{damAdmin/node_modules}" />
+    <file url="file://$PROJECT_DIR$/web/dev" libraries="{damAdmin/web/dev/node_modules}" />
+    <file url="file://$PROJECT_DIR$/web/test" libraries="{damAdmin/web/test/node_modules}" />
     <includedPredefinedLibrary name="ECMAScript 6" />
   </component>
 </project>

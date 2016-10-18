@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import Login from '../Login/index';
 import {browserHistory, Link} from 'react-router';
 import './index.scss';
-import {Menu, Breadcrumb, Icon, Dropdown} from 'antd';
+import { Menu, Breadcrumb, Icon } from 'antd';
 import localStorage from '../../utils/localStorage';
 
 const SubMenu = Menu.SubMenu;
