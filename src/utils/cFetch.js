@@ -97,6 +97,7 @@ function cFetch(url, options) {
   let mergeUrl = API_CONFIG.baseUri + url;
 
   if(options.method === 'POST'){
+    // console.log(options.body)
     let body = JSON.parse(options.body);
     if(body.pageNum){
       mergeUrl+= '&pageNum=' + body.pageNum;
@@ -104,6 +105,8 @@ function cFetch(url, options) {
     if(body.pageSize){
       mergeUrl+= '&pageSize=' + body.pageSize;
     }
+
+    options.body= JSON.stringify(body);
   }
 
   const defaultOptions = {

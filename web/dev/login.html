@@ -1,1 +1,39 @@
-<!DOCTYPE html><html lang=en><head><meta http-equiv=X-UA-Compatible content="IE=edge"><meta charset=UTF-8><title>DAM 运营管理系统</title><link rel="shortcut icon" href=http://dev.damadmin.vcg.com/src/favicon.ico><link href=http://dev.damadmin.vcg.com/src/antd.84b7df7a3e5781c10522773a647097e7.css rel=stylesheet><link href=http://dev.damadmin.vcg.com/src/app.49e2726ffbc0943aa346ef6660ad09c0.css rel=stylesheet></head><body><div id=app></div><script type=text/javascript src=http://dev.damadmin.vcg.com/src/app.096f08ba980e765a8038.js></script></body></html><script type=text/javascript>window._trackJs = { token: '82d2a1f884ba452580a4250b91979eec' };</script><script type=text/javascript src=https://cdn.trackjs.com/releases/current/tracker.js></script>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.js"></script>
+</head>
+<body>
+<div class="box">
+  <input type="text" id="damid">
+  <input type="password" id="dampassword">
+  <input type="button" id="btn" value="登陆">
+</div>
+
+<script>
+  $(function () {
+    $('#btn').on('click', function () {
+      var id = $('#damid').val();
+      var dampassword = $('#dampassword').val();
+
+      $.ajax({
+        type: 'POST',
+        url: 'http://dev.dam-server.vcg.com/damSys/syslogin',
+        contentType:"application/json",
+        data: JSON.stringify({
+          damId: id,
+          damPasswd: dampassword
+        })
+      }).done(function (data) {
+        console.log(data)
+      })
+    })
+  })
+</script>
+</body>
+</html>
