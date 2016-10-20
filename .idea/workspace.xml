@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="06359269-5d36-4a98-b21f-d08f793e6f92" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/utils/cFetch.js" afterPath="$PROJECT_DIR$/src/utils/cFetch.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/dev/index.html" afterPath="$PROJECT_DIR$/web/dev/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/dev/login.html" afterPath="$PROJECT_DIR$/web/dev/login.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/dev/src/app.096f08ba980e765a8038.js" afterPath="$PROJECT_DIR$/web/dev/src/app.096f08ba980e765a8038.js" />
-    </list>
+    <list default="true" id="06359269-5d36-4a98-b21f-d08f793e6f92" name="Default" comment="" />
     <ignored path="damAdmin.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -48,24 +43,14 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="cFetch.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="cFetch.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/utils/cFetch.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="489">
-              <caret line="129" column="21" selection-start-line="129" selection-start-column="8" selection-end-line="129" selection-end-column="21" />
+              <caret line="129" column="56" selection-start-line="129" selection-start-column="56" selection-end-line="129" selection-end-column="56" />
               <folding>
                 <element signature="e#74#105#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="app.096f08ba980e765a8038.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/web/dev/src/app.096f08ba980e765a8038.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="286">
-              <caret line="5" column="18805" selection-start-line="5" selection-start-column="18805" selection-end-line="5" selection-end-column="18805" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -447,12 +432,12 @@
       <workItem from="1476407328749" duration="1952000" />
       <workItem from="1476411623228" duration="4536000" />
       <workItem from="1476433420339" duration="498000" />
-      <workItem from="1476759760979" duration="8608000" />
+      <workItem from="1476759760979" duration="8868000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="180997000" />
+    <option name="totallyTimeSpent" value="181257000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -850,14 +835,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/dev/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="80">
-          <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/tools/mock.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="320">
@@ -868,21 +845,29 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/utils/cFetch.js">
+    <entry file="file://$PROJECT_DIR$/web/dev/src/app.096f08ba980e765a8038.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="489">
-          <caret line="129" column="21" selection-start-line="129" selection-start-column="8" selection-end-line="129" selection-end-column="21" />
-          <folding>
-            <element signature="e#74#105#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="316">
+          <caret line="5" column="18805" selection-start-line="5" selection-start-column="18805" selection-end-line="5" selection-end-column="18805" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/dev/src/app.096f08ba980e765a8038.js">
+    <entry file="file://$PROJECT_DIR$/web/dev/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="5" column="18805" selection-start-line="5" selection-start-column="18805" selection-end-line="5" selection-end-column="18805" />
+        <state relative-caret-position="80">
+          <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/utils/cFetch.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="489">
+          <caret line="129" column="56" selection-start-line="129" selection-start-column="56" selection-end-line="129" selection-end-column="56" />
+          <folding>
+            <element signature="e#74#105#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
