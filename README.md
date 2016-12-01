@@ -1,8 +1,8 @@
 ## Getting Started
 ### install
 ```
-git clone http://gitlab.vcg.com/dam/damweb.git
-cd damweb
+git clone http://gitlab.vcg.com/dam/damAdmin.git
+cd damAdmin
 npm install
 
 # run dev
